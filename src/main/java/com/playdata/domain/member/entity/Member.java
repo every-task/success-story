@@ -1,7 +1,6 @@
-package com.playdata.successstory.domain.user.entity;
+package com.playdata.domain.member.entity;
 
-import com.playdata.successstory.domain.article.entity.Article;
-import com.playdata.successstory.domain.comment.entity.Comment;
+import com.playdata.domain.article.entity.Article;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,17 +10,17 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "member")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class Member {
     @Id
     private UUID id;
 
     private String nickname;
     private String profileImageUrl;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member")
     private List<Article> articles;
 
 }

@@ -1,4 +1,4 @@
-package com.playdata.successstory.domain.task.entity;
+package com.playdata.domain.task.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

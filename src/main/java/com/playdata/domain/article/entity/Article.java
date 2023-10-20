@@ -1,10 +1,13 @@
-package com.playdata.successstory.domain.article.entity;
+package com.playdata.domain.article.entity;
 
-import com.playdata.successstory.domain.user.entity.User;
+import com.playdata.domain.comment.entity.Comment;
+import com.playdata.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "article")
@@ -18,6 +21,8 @@ public class Article {
     private String title;
     private String content;
 
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
     @ManyToOne
-    private User user;
+    private Member member;
 }

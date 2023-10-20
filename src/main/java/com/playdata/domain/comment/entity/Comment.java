@@ -1,6 +1,7 @@
-package com.playdata.successstory.domain.comment.entity;
+package com.playdata.domain.comment.entity;
 
-import com.playdata.successstory.domain.user.entity.User;
+import com.playdata.domain.article.entity.Article;
+import com.playdata.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,5 +19,7 @@ public class Comment {
     private String content;
 
     @ManyToOne
-    private User user;
+    private Article article;
+    @ManyToOne
+    private Member member;
 }
