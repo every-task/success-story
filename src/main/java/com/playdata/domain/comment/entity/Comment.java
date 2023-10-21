@@ -22,4 +22,9 @@ public class Comment {
     private Article article;
     @ManyToOne
     private Member member;
+
+    @Builder
+    public Comment(String content) {
+        this.content = content;
+    }
 }
