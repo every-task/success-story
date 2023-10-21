@@ -26,4 +26,9 @@ public class Article {
     @ManyToOne
     private Member member;
 
+    @Builder
+    public Article(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
