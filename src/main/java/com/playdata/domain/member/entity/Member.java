@@ -3,6 +3,7 @@ package com.playdata.domain.member.entity;
 import com.playdata.domain.article.entity.Article;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Article> articles;
 
+    @Builder
+    public Member(String nickname, String profileImageUrl) {
+        this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
+    }
 }
