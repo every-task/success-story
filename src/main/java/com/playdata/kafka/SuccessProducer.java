@@ -18,7 +18,7 @@ public class SuccessProducer {
     @Async
     public void send(ArticleKafka articleKafka) {
         CompletableFuture<SendResult<String, ArticleKafka>> resultCompletableFuture =
-                kafkaTemplate.send(TopicConfig.success, articleKafka);
+                kafkaTemplate.send(TopicConfig.SUCCESS, articleKafka);
         resultCompletableFuture
                 .thenAccept(result ->
                         System.out.println("send After "
