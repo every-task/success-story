@@ -2,8 +2,8 @@ package com.playdata.domain.article.kafka;
 
 import com.playdata.domain.article.entity.Article;
 
-public record ArticleKafka(Long id, String title, String content) {
+public record ArticleKafka(Long id) {
     public static ArticleKafka of(Article article) {
-        return new ArticleKafka(article.getId(), article.getTitle(), article.getContent());
+        return new ArticleKafka(article.getId());
     }
 }
