@@ -24,7 +24,9 @@ public class Comment {
     private Member member;
 
     @Builder
-    public Comment(String content) {
+    public Comment(String content, Article article) {
         this.content = content;
+        this.article = article;
+
     }
 }

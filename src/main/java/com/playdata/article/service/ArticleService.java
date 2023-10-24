@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +24,8 @@ public class ArticleService {
     private final StoryProducer storyProducer;
     private final TaskRepository taskRepository;
 
-    public void save(ArticleRequest articleRequest) {
-        Article save = articleRepository.save(articleRequest.toEntityArticle());
+    public void save(ArticleRequest articleRequest, UUID memberId) {
+        Article save = articleRepository.save(articleRequest.toEntityArticle(memberId));
         taskRepository.saveAll(articleRequest.toEntityTasks(save));
 
         storyProducer.send(ArticleKafka.of(save));
