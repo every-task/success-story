@@ -8,7 +8,6 @@ import java.util.UUID;
 @Getter
 public class MemberResponse {
     private UUID id;
-
     private String nickname;
     private String profileImageUrl;
 
