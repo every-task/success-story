@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/success")
+@RequestMapping("/api/v1/story")
 public class ArticleController {
     private final ArticleService articleService;
 

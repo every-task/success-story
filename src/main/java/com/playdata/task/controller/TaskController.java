@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/success")
+@RequestMapping("/api/v1/story")
 public class TaskController {
     private final TaskService taskService;
 
