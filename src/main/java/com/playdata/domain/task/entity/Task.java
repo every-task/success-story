@@ -1,7 +1,9 @@
 package com.playdata.domain.task.entity;
 
+import com.playdata.domain.article.entity.Article;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +20,17 @@ public class Task {
     private UUID id;
 
     private String content;
-
     @Enumerated(EnumType.STRING)
     private Period period;
+
+    @ManyToOne
+    private Article article;
+
+    @Builder
+    public Task(UUID id, String content, Period period) {
+        this.id = id;
+        this.content = content;
+        this.period = period;
+    }
+
 }
