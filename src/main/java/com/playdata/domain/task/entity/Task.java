@@ -27,10 +27,11 @@ public class Task {
     private Article article;
 
     @Builder
-    public Task(UUID id, String content, Period period) {
+    public Task(UUID id, String content, Period period,Article article) {
         this.id = id;
         this.content = content;
         this.period = period;
+        this.article = article;
     }
 
 }
