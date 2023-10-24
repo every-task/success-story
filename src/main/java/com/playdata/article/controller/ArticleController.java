@@ -26,8 +26,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    public ArticleResponse getArticleById(@PathVariable Long id) {
-        Article article = articleService.findById(id);
-        return new ArticleResponse(article);
+    public ArticleResponse getArticle(@PathVariable Long id) {
+        return articleService.getArticle(id);
     }
 }
