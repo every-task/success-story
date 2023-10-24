@@ -13,12 +13,12 @@ import java.util.concurrent.CompletableFuture;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class SuccessProducer {
+public class StoryProducer {
     private final KafkaTemplate<String, ArticleKafka> kafkaTemplate;
     @Async
     public void send(ArticleKafka articleKafka) {
         CompletableFuture<SendResult<String, ArticleKafka>> resultCompletableFuture =
-                kafkaTemplate.send(TopicConfig.SUCCESS, articleKafka);
+                kafkaTemplate.send(TopicConfig.STORY, articleKafka);
         resultCompletableFuture
                 .thenAccept(result ->
                         System.out.println("send After "
