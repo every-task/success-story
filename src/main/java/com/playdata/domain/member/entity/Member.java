@@ -20,7 +20,6 @@ import java.util.UUID;
 public class Member {
     @Id
     private UUID id;
-
     private String nickname;
     private String profileImageUrl;
 
@@ -28,7 +27,8 @@ public class Member {
     private List<Article> articles;
 
     @Builder
-    public Member(String nickname, String profileImageUrl) {
+    public Member(UUID id, String nickname, String profileImageUrl) {
+        this.id = id;
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
     }
