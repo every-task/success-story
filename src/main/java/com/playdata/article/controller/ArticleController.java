@@ -1,10 +1,10 @@
 package com.playdata.article.controller;
 
 import com.playdata.article.service.ArticleService;
-import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.request.ArticleRequest;
 import com.playdata.domain.article.response.ArticleResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +16,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody ArticleRequest articleRequest) {
         articleService.save(articleRequest);
     }
