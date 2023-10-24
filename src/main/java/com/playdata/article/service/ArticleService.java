@@ -5,6 +5,7 @@ import com.playdata.domain.article.kafka.ArticleKafka;
 import com.playdata.domain.article.repository.ArticleRepository;
 import com.playdata.domain.article.request.ArticleRequest;
 import com.playdata.domain.article.response.ArticleResponse;
+import com.playdata.domain.task.repository.TaskRepository;
 import com.playdata.kafka.StoryProducer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,12 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final StoryProducer storyProducer;
+    private final TaskRepository taskRepository;
 
     public void save(ArticleRequest articleRequest) {
-        Article save = articleRepository.save(articleRequest.toEntity());
+        Article save = articleRepository.save(articleRequest.toEntityArticle());
+        taskRepository.saveAll(articleRequest.toEntityTasks(save));
+
         storyProducer.send(ArticleKafka.of(save));
     }
 
