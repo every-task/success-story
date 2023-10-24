@@ -5,6 +5,7 @@ import com.playdata.domain.article.kafka.ArticleKafka;
 import com.playdata.domain.article.repository.ArticleRepository;
 import com.playdata.domain.article.request.ArticleRequest;
 import com.playdata.domain.article.response.ArticleResponse;
+import com.playdata.domain.task.dto.TaskDto;
 import com.playdata.domain.task.repository.TaskRepository;
 import com.playdata.kafka.StoryProducer;
 import jakarta.transaction.Transactional;
@@ -26,9 +27,13 @@ public class ArticleService {
 
     public void save(ArticleRequest articleRequest, UUID memberId) {
         Article save = articleRepository.save(articleRequest.toEntityArticle(memberId));
-        taskRepository.saveAll(articleRequest.toEntityTasks(save));
 
-        storyProducer.send(ArticleKafka.of(save));
+        List<TaskDto> tasks = taskRepository.saveAll(articleRequest.toEntityTasks(save))
+                .stream()
+                .map(TaskDto::new)
+                .toList();
+
+        storyProducer.send(ArticleKafka.of(save,tasks));
     }
 
     public List<ArticleResponse> findAll() {

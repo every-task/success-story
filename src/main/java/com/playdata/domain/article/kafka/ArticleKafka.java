@@ -1,9 +1,12 @@
 package com.playdata.domain.article.kafka;
 
 import com.playdata.domain.article.entity.Article;
+import com.playdata.domain.task.dto.TaskDto;
 
-public record ArticleKafka(Long id) {
-    public static ArticleKafka of(Article article) {
-        return new ArticleKafka(article.getId());
+import java.util.List;
+
+public record ArticleKafka(Long id, String title, String content, List<TaskDto> tasks) {
+    public static ArticleKafka of(Article article, List<TaskDto> tasks) {
+        return new ArticleKafka(article.getId(), article.getTitle(), article.getContent(), tasks);
     }
 }
