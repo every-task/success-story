@@ -6,12 +6,11 @@ import com.playdata.domain.member.entity.Member;
 
 import java.util.UUID;
 
-public record CommentRequest(String content, Article article) {
+public record CommentRequest(String content) {
 
     public Comment toEntity(UUID memberId, Long articleId) {
         return Comment.builder()
                 .content(content)
-                .article(article)
                 .member(Member.builder().id(memberId).build())
                 .article(Article.builder().id(articleId).build())
                 .build();
