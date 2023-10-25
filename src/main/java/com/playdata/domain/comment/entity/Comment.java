@@ -1,5 +1,6 @@
 package com.playdata.domain.comment.entity;
 
+import com.playdata.config.BaseEntity;
 import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.member.entity.Member;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Comment {
+public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
