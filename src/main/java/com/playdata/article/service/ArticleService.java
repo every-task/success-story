@@ -1,5 +1,6 @@
 package com.playdata.article.service;
 
+import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.kafka.ArticleKafka;
 import com.playdata.domain.article.repository.ArticleRepository;
@@ -10,6 +11,8 @@ import com.playdata.domain.task.repository.TaskRepository;
 import com.playdata.kafka.StoryProducer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,10 +39,6 @@ public class ArticleService {
         storyProducer.send(ArticleKafka.of(save,tasks));
     }
 
-    public List<ArticleResponse> findAll() {
-        List<Article> all = articleRepository.findAll();
-        return all.stream().map(ArticleResponse::new).toList();
-    }
 
     public Article findById(Long id) {
         return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("id 못찾음"));
@@ -50,4 +49,7 @@ public class ArticleService {
         return articleResponse.map(ArticleResponse::new).orElse(null);
     }
 
+    public Page<ArticleResponse> getAll(ArticleCondition articleCondition,PageRequest pageRequest) {
+        return articleRepository.findAllByCondition(pageRequest, articleCondition);
+    }
 }
