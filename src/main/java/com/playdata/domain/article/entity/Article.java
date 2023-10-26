@@ -1,5 +1,6 @@
 package com.playdata.domain.article.entity;
 
+import com.playdata.config.BaseEntity;
 import com.playdata.domain.comment.entity.Comment;
 import com.playdata.domain.member.entity.Member;
 import com.playdata.domain.task.entity.Task;
@@ -14,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Article {
+public class Article extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

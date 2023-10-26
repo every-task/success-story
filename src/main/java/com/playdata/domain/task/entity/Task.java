@@ -1,5 +1,6 @@
 package com.playdata.domain.task.entity;
 
+import com.playdata.config.BaseEntity;
 import com.playdata.domain.article.entity.Article;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Table(name = "task")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Task {
+public class Task extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
