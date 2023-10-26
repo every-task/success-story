@@ -7,7 +7,6 @@ import com.playdata.domain.article.repository.ArticleRepository;
 import com.playdata.domain.article.request.ArticleRequest;
 import com.playdata.domain.article.response.ArticleResponse;
 import com.playdata.domain.task.dto.TaskDto;
-import com.playdata.domain.task.repository.TaskRepository;
 import com.playdata.kafka.StoryProducer;
 import com.playdata.task.service.TaskService;
 import jakarta.transaction.Transactional;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,20 +27,19 @@ public class ArticleService {
     private final StoryProducer storyProducer;
     private final TaskService taskService;
 
-    public void save(ArticleRequest articleRequest, UUID memberId) {
+    public void articleWrite(ArticleRequest articleRequest, UUID memberId) {
         Article save = articleRepository.save(articleRequest.toEntityArticle(memberId));
-        List<TaskDto> tasks = taskService.saveAll(articleRequest.toEntityTasks(save));
+        List<TaskDto> tasks = taskService.taskSaveAll(articleRequest.toEntityTasks(save));
         storyProducer.send(ArticleKafka.of(save,tasks));
     }
-
 
     public Article findById(Long id) {
         return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("id 못찾음"));
     }
 
     public ArticleResponse getArticle(Long id) {
-        Optional<Article> articleResponse = articleRepository.findById(id);
-        return articleResponse.map(ArticleResponse::new).orElse(null);
+        Article articleResponse = findById(id);
+        return new ArticleResponse(articleResponse);
     }
 
     public Page<ArticleResponse> getAll(ArticleCondition articleCondition,PageRequest pageRequest) {
