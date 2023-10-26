@@ -15,7 +15,7 @@ import java.util.UUID;
 public class CommentService {
     private final CommentRepository commentRepository;
 
-    public void save(CommentRequest commentRequest, Long articleId, UUID memberId) {
+    public void commentWrite(CommentRequest commentRequest, Long articleId, UUID memberId) {
         commentRepository.save(commentRequest.toEntity(memberId, articleId));
     }
 }

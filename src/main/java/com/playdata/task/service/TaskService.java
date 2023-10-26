@@ -18,7 +18,7 @@ public class TaskService {
         taskRepository.save(taskRequest.toEntity());
     }
 
-    public List<TaskDto>  saveAll(List<Task> tasks) {
+    public List<TaskDto> taskSaveAll(List<Task> tasks) {
         return taskRepository.saveAll(tasks)
                 .stream()
                 .map(TaskDto::new)
