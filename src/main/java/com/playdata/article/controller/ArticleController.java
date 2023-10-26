@@ -20,8 +20,8 @@ public class ArticleController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void save(@AuthenticationPrincipal TokenInfo tokenInfo,@RequestBody ArticleRequest articleRequest) {
-        articleService.save(articleRequest,tokenInfo.getId());
+    public void articleWrite(@AuthenticationPrincipal TokenInfo tokenInfo,@RequestBody ArticleRequest articleRequest) {
+        articleService.articleWrite(articleRequest,tokenInfo.getId());
     }
 
     @GetMapping("/{id}")

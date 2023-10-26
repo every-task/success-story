@@ -14,7 +14,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/{articleId}")
-    public void save(@AuthenticationPrincipal TokenInfo tokenInfo,@PathVariable(value = "articleId") Long articleId, @RequestBody CommentRequest commentRequest) {
-        commentService.save(commentRequest, articleId,tokenInfo.getId());
+    public void commentWrite(@AuthenticationPrincipal TokenInfo tokenInfo,@PathVariable(value = "articleId") Long articleId, @RequestBody CommentRequest commentRequest) {
+        commentService.commentWrite(commentRequest, articleId,tokenInfo.getId());
     }
 }

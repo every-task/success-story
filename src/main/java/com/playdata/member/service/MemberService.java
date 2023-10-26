@@ -15,7 +15,7 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public void save(MemberRequest memberRequest) {
+    public void memberSave(MemberRequest memberRequest) {
         memberRepository.save(memberRequest.ToEntity());
     }
 
