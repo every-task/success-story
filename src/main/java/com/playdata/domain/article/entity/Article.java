@@ -3,6 +3,7 @@ package com.playdata.domain.article.entity;
 import com.playdata.config.BaseEntity;
 import com.playdata.domain.comment.entity.Comment;
 import com.playdata.domain.member.entity.Member;
+import com.playdata.domain.task.entity.Task;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,10 @@ public class Article extends BaseEntity {
 
     @OneToMany(mappedBy = "article")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "article")
+    private List<Task> tasks;
+
     @ManyToOne
     private Member member;
 
