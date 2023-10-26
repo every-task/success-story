@@ -55,7 +55,7 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
 
 
     private BooleanExpression contentContains(String content) {
-        return content == null
+        return content == null || content.isEmpty()
                 ? null
                 : article.content.contains(content);
     }
