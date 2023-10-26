@@ -9,6 +9,7 @@ import com.playdata.domain.article.response.ArticleResponse;
 import com.playdata.domain.task.dto.TaskDto;
 import com.playdata.domain.task.repository.TaskRepository;
 import com.playdata.kafka.StoryProducer;
+import com.playdata.task.service.TaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,16 +27,11 @@ import java.util.UUID;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final StoryProducer storyProducer;
-    private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
     public void save(ArticleRequest articleRequest, UUID memberId) {
         Article save = articleRepository.save(articleRequest.toEntityArticle(memberId));
-
-        List<TaskDto> tasks = taskRepository.saveAll(articleRequest.toEntityTasks(save))
-                .stream()
-                .map(TaskDto::new)
-                .toList();
-
+        List<TaskDto> tasks = taskService.saveAll(articleRequest.toEntityTasks(save));
         storyProducer.send(ArticleKafka.of(save,tasks));
     }
 
