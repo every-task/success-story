@@ -2,6 +2,7 @@ package com.playdata.domain.article.repository;
 
 import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.entity.Article;
+import com.playdata.domain.article.entity.Category;
 import com.playdata.domain.article.response.ArticleResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -31,7 +32,8 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 .fetchJoin()
                 .where(
                         contentContains(condition.getContent()),
-                        titleEq(condition.getTitle())
+                        titleEq(condition.getTitle()),
+                        categoryEq(condition.getCategory())
                 )
                 .orderBy(article.createdAt.desc(), article.createdAt.asc())
                 .offset(request.getPageNumber())
@@ -43,7 +45,8 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 .from(article)
                 .where(
                         contentContains(condition.getContent()),
-                        titleEq(condition.getTitle())
+                        titleEq(condition.getTitle()),
+                        categoryEq(condition.getCategory())
                 )
                 .fetchOne(); //단건조회
         PageImpl<Article> articlesList = new PageImpl<>(articleList, request, totalSize);
@@ -65,4 +68,9 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 : article.title.eq(title);
     }
 
+    private BooleanExpression categoryEq(Category category) {
+        return category == null
+                ? null
+                : article.category.eq(category);
+    }
 }
