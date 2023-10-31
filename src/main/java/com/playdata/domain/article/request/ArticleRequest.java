@@ -15,7 +15,8 @@ public record ArticleRequest(ArticleDto article,
     public Article toEntityArticle(UUID memberId) {
         return Article.builder()
                 .title(article.getTitle())
-                .content(article().getContent())
+                .content(article.getContent())
+                .category(article.getCategory())
                 .member(Member.builder().id(memberId).build())
                 .build();
     }
