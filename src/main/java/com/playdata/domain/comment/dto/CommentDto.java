@@ -10,6 +10,6 @@ public class CommentDto {
 
     public CommentDto(Comment comment) {
         this.id = comment.getId();
-        content = comment.getContent(); //얘는 왜 this 가 없는가?
+        this.content = comment.getContent();
     }
 }
