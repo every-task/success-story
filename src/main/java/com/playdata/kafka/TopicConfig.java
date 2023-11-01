@@ -9,6 +9,7 @@ import org.springframework.kafka.config.TopicBuilder;
 public class TopicConfig {
     public final static String STORY = "story"; //내가 발행한 토픽
     public final static String MEMBER = "member"; //내가 구독한 토픽
+    public final static String topicDLT = "member.DLT";
 
     @Bean
     public NewTopic story() {
@@ -24,5 +25,8 @@ public class TopicConfig {
         return new NewTopic(MEMBER, 1, (short) 1);
     }
 
-
+    @Bean
+    public NewTopic topicDLT() {
+        return new NewTopic(topicDLT, 1, (short) 1);
+    }
 }
