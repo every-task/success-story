@@ -23,6 +23,9 @@ public class Article extends BaseEntity {
     private String title;
     private String content;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     @OneToMany(mappedBy = "article")
     private List<Comment> comments;
 
@@ -33,8 +36,9 @@ public class Article extends BaseEntity {
     private Member member;
 
     @Builder
-    public Article(String title, String content) {
+    public Article(String title, String content, Category category) {
         this.title = title;
         this.content = content;
+        this.category = category;
     }
 }
