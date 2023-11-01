@@ -19,6 +19,10 @@ public class StoryProducer {
     public void send(ArticleKafka articleKafka) {
         CompletableFuture<SendResult<String, ArticleKafka>> resultCompletableFuture =
                 kafkaTemplate.send(TopicConfig.STORY, articleKafka);
+
+        if(resultCompletableFuture.isCompletedExceptionally()){
+            throw new RuntimeException("발행 실패");}
+
         resultCompletableFuture
                 .thenAccept(result ->
                         System.out.println("send After "
