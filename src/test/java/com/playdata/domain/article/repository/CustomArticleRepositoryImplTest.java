@@ -1,7 +1,7 @@
 package com.playdata.domain.article.repository;
 
 import com.playdata.domain.article.dto.ArticleCondition;
-import com.playdata.domain.article.response.ArticleResponse;
+import com.playdata.domain.article.response.ArticleAllResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ class CustomArticleRepositoryImplTest {
     void findAllByCondition() {
         PageRequest pageRequest = PageRequest.of(0, 10);
         ArticleCondition condition = ArticleCondition.builder().title("개발자가 되고싶어요").build();
-        Page<ArticleResponse> allByCondition =
+        Page<ArticleAllResponse> allByCondition =
                 articleRepository.findAllByCondition(pageRequest, condition);
 
         assertEquals(allByCondition.getTotalElements(),2);
@@ -31,7 +31,7 @@ class CustomArticleRepositoryImplTest {
     void findAllByCondition2() {
         PageRequest pageRequest = PageRequest.of(0, 10);
         ArticleCondition condition = ArticleCondition.builder().category(HEALTH).build();
-        Page<ArticleResponse> allByCondition =
+        Page<ArticleAllResponse> allByCondition =
                 articleRepository.findAllByCondition(pageRequest, condition);
 
         assertEquals(allByCondition.getTotalElements(),2);
