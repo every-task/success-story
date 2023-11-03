@@ -4,6 +4,7 @@ import com.playdata.article.service.ArticleService;
 import com.playdata.config.TokenInfo;
 import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.request.ArticleRequest;
+import com.playdata.domain.article.request.ArticleUpdateRequest;
 import com.playdata.domain.article.response.ArticleAllResponse;
 import com.playdata.domain.article.response.ArticleResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +39,13 @@ public class ArticleController {
             ArticleCondition articleCondition
     ) {
         return articleService.getAll(articleCondition, PageRequest.of(page, size));
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ArticleResponse updateArticle(@AuthenticationPrincipal TokenInfo tokenInfo,
+                                         @PathVariable("id")Long id,
+                                         @RequestBody ArticleUpdateRequest articleUpdateRequest) {
+        return articleService.updateArticle(tokenInfo, id, articleUpdateRequest);
     }
 }

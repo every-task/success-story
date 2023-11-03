@@ -1,13 +1,16 @@
 package com.playdata.article.service;
 
+import com.playdata.config.TokenInfo;
 import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.kafka.ArticleKafka;
 import com.playdata.domain.article.repository.ArticleRepository;
 import com.playdata.domain.article.request.ArticleRequest;
+import com.playdata.domain.article.request.ArticleUpdateRequest;
 import com.playdata.domain.article.response.ArticleAllResponse;
 import com.playdata.domain.article.response.ArticleResponse;
 import com.playdata.domain.task.dto.TaskDto;
+import com.playdata.exception.NotCorrectMemberException;
 import com.playdata.kafka.StoryProducer;
 import com.playdata.task.service.TaskService;
 import jakarta.transaction.Transactional;
@@ -45,5 +48,20 @@ public class ArticleService {
 
     public Page<ArticleAllResponse> getAll(ArticleCondition articleCondition, PageRequest pageRequest) {
         return articleRepository.findAllByCondition(pageRequest, articleCondition);
+    }
+
+    public ArticleResponse updateArticle(TokenInfo tokenInfo,
+                                         Long articleId,
+                                         ArticleUpdateRequest articleUpdateRequest){
+        Article article = findById(articleId);
+        List<TaskDto> list = article.getTasks().stream().map(TaskDto::new).toList();
+        if (tokenInfo.getId().equals(article.getMember().getId())) {
+            article.update(articleUpdateRequest.title(), articleUpdateRequest.content(), articleUpdateRequest.category());
+            storyProducer.send(ArticleKafka.of(article,list));
+            return new ArticleResponse(article);
+        }else {
+            throw new NotCorrectMemberException("Not Correct Member");
+        }
+
     }
 }

@@ -14,6 +14,7 @@ public class CustomControllerAdvice {
     @ExceptionHandler(NotCorrectMemberException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ErrorResponse notCorrectMemberExceptionHandler(NotCorrectMemberException e) {
+        log.error("Not Correct",e);
         return new ErrorResponse(e.getMessage());
     }
 
