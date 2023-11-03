@@ -11,9 +11,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberDto {
-    UUID id;
-    String nickname;
-    String profileImageUrl;
+    private UUID id;
+    private String nickname;
+    private String profileImageUrl;
 
     public MemberDto(Member member) {
         this.id = member.getId();
