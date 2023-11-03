@@ -5,6 +5,7 @@ import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.kafka.ArticleKafka;
 import com.playdata.domain.article.repository.ArticleRepository;
 import com.playdata.domain.article.request.ArticleRequest;
+import com.playdata.domain.article.response.ArticleAllResponse;
 import com.playdata.domain.article.response.ArticleResponse;
 import com.playdata.domain.task.dto.TaskDto;
 import com.playdata.kafka.StoryProducer;
@@ -42,7 +43,7 @@ public class ArticleService {
         return new ArticleResponse(articleResponse);
     }
 
-    public Page<ArticleResponse> getAll(ArticleCondition articleCondition,PageRequest pageRequest) {
+    public Page<ArticleAllResponse> getAll(ArticleCondition articleCondition, PageRequest pageRequest) {
         return articleRepository.findAllByCondition(pageRequest, articleCondition);
     }
 }

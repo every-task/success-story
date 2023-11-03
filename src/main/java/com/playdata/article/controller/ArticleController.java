@@ -4,6 +4,7 @@ import com.playdata.article.service.ArticleService;
 import com.playdata.config.TokenInfo;
 import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.request.ArticleRequest;
+import com.playdata.domain.article.response.ArticleAllResponse;
 import com.playdata.domain.article.response.ArticleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +32,7 @@ public class ArticleController {
     }
 
     @GetMapping
-    public Page<ArticleResponse> getAll(
+    public Page<ArticleAllResponse> getAll(
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
             ArticleCondition articleCondition

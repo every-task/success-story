@@ -3,7 +3,7 @@ package com.playdata.domain.article.repository;
 import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.entity.Category;
-import com.playdata.domain.article.response.ArticleResponse;
+import com.playdata.domain.article.response.ArticleAllResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -24,7 +24,7 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
     }
 
     @Override
-    public Page<ArticleResponse> findAllByCondition(PageRequest request, ArticleCondition condition) {
+    public Page<ArticleAllResponse> findAllByCondition(PageRequest request, ArticleCondition condition) {
         JPAQuery<Article> articles = queryFactory
                 .select(article)
                 .from(article)
@@ -50,7 +50,7 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 )
                 .fetchOne(); //단건조회
         PageImpl<Article> articlesList = new PageImpl<>(articleList, request, totalSize);
-        Page<ArticleResponse> map = articlesList.map(ArticleResponse::new);
+        Page<ArticleAllResponse> map = articlesList.map(ArticleAllResponse::new);
 
         return map;
 
