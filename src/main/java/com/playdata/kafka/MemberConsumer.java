@@ -15,4 +15,9 @@ public class MemberConsumer {
     public void listen(MemberKafkaData data) {
         memberRepository.save(data.ToEntity());
     }
+
+    @KafkaListener(topics = TopicConfig.topicDLT)
+    public void dltListen(byte[] in) {
+        System.out.println("dltListen"+new String(in)); //수정 예정 아직 뭐로 할지 결정하지 못함
+    }
 }
