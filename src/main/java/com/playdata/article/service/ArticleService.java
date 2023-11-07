@@ -55,13 +55,16 @@ public class ArticleService {
                                          ArticleUpdateRequest articleUpdateRequest){
         Article article = findById(articleId);
         List<TaskDto> list = article.getTasks().stream().map(TaskDto::new).toList();
+        return getArticleResponse(tokenInfo, articleUpdateRequest, article, list);
+    }
+
+    private ArticleResponse getArticleResponse(TokenInfo tokenInfo, ArticleUpdateRequest articleUpdateRequest, Article article, List<TaskDto> list) {
         if (tokenInfo.getId().equals(article.getMember().getId())) {
             article.update(articleUpdateRequest.title(), articleUpdateRequest.content(), articleUpdateRequest.category());
-            storyProducer.send(ArticleKafka.of(article,list));
+            storyProducer.send(ArticleKafka.of(article, list));
             return new ArticleResponse(article);
         }else {
             throw new NotCorrectMemberException("Not Correct Member");
         }
-
     }
 }
