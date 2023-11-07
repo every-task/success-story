@@ -48,4 +48,12 @@ public class ArticleController {
                                          @RequestBody ArticleUpdateRequest articleUpdateRequest) {
         return articleService.updateArticle(tokenInfo, id, articleUpdateRequest);
     }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteArticle(@AuthenticationPrincipal TokenInfo tokenInfo,
+                              @PathVariable("id")Long id) {
+        articleService.deleteArticle(tokenInfo,id);
+    }
+
 }
