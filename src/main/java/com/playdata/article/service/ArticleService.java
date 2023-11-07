@@ -55,15 +55,28 @@ public class ArticleService {
                                          ArticleUpdateRequest articleUpdateRequest){
         Article article = findById(articleId);
         List<TaskDto> list = article.getTasks().stream().map(TaskDto::new).toList();
-        return getArticleResponse(tokenInfo, articleUpdateRequest, article, list);
+        return updateAndSendToKafkaById(tokenInfo, articleUpdateRequest, article, list);
     }
-
-    private ArticleResponse getArticleResponse(TokenInfo tokenInfo, ArticleUpdateRequest articleUpdateRequest, Article article, List<TaskDto> list) {
+    
+    private ArticleResponse updateAndSendToKafkaById(TokenInfo tokenInfo, ArticleUpdateRequest articleUpdateRequest, Article article, List<TaskDto> list) {
         if (tokenInfo.getId().equals(article.getMember().getId())) {
             article.update(articleUpdateRequest.title(), articleUpdateRequest.content(), articleUpdateRequest.category());
             storyProducer.send(ArticleKafka.of(article, list));
             return new ArticleResponse(article);
         }else {
+            throw new NotCorrectMemberException("Not Correct Member");
+        }
+    }
+    public void deleteArticle(TokenInfo tokenInfo,
+                              Long articleId) {
+        Article article = findById(articleId);
+        deleteById(tokenInfo, article);
+    }
+
+    private static void deleteById(TokenInfo tokenInfo, Article article) {
+        if (tokenInfo.getId().equals(article.getMember().getId())) {
+            article.delete();
+        } else {
             throw new NotCorrectMemberException("Not Correct Member");
         }
     }
