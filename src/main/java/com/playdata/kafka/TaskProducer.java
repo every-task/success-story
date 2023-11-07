@@ -1,6 +1,5 @@
 package com.playdata.kafka;
 
-import com.playdata.domain.article.kafka.ArticleKafka;
 import com.playdata.domain.task.kafka.TaskUpdateKafka;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ public class TaskProducer {
 
         resultCompletableFuture
                 .thenAccept(result ->
-                        System.out.println("send After "
+                        log.info("send After "
                                 + taskUpdateKafka + " "
                                 + result.getRecordMetadata()
                                 .offset()));
