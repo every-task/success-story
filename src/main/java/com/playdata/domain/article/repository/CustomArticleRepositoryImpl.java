@@ -33,7 +33,8 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 .where(
                         contentContains(condition.getContent()),
                         titleEq(condition.getTitle()),
-                        categoryEq(condition.getCategory())
+                        categoryEq(condition.getCategory()),
+                        article.isDeleted.eq(true).not()
                 )
                 .orderBy(article.createdAt.desc(), article.createdAt.asc())
                 .offset(request.getPageNumber())
@@ -46,7 +47,8 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 .where(
                         contentContains(condition.getContent()),
                         titleEq(condition.getTitle()),
-                        categoryEq(condition.getCategory())
+                        categoryEq(condition.getCategory()),
+                        article.isDeleted.eq(true).not() //true 인것만 안보임
                 )
                 .fetchOne(); //단건조회
         PageImpl<Article> articlesList = new PageImpl<>(articleList, request, totalSize);
