@@ -73,11 +73,11 @@ public class ArticleService {
         deleteById(tokenInfo, article);
     }
 
-    private static void deleteById(TokenInfo tokenInfo, Article article) {
+    private void deleteById(TokenInfo tokenInfo, Article article) {
         if (tokenInfo.getId().equals(article.getMember().getId())) {
             article.delete();
         } else {
-            throw new NotCorrectMemberException("Not Correct Member");
+            throw new NotCorrectMemberException("Not Correct MemberId");
         }
     }
 }

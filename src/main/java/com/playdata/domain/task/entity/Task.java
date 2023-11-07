@@ -35,4 +35,8 @@ public class Task extends BaseEntity {
         this.article = article;
     }
 
+    public void update(String content, Period period) {
+        this.content = content;
+        this.period = period;
+    }
 }
