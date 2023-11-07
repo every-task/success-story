@@ -64,7 +64,8 @@ public class ArticleService {
             storyProducer.send(ArticleKafka.of(article, list));
             return new ArticleResponse(article);
         }else {
-            throw new NotCorrectMemberException("Not Correct Member");
+            throw new NotCorrectMemberException("Not Correct Member, memberId = {%s}"
+                    .formatted(article.getMember().getId()));
         }
     }
     public void deleteArticle(TokenInfo tokenInfo,
@@ -77,7 +78,8 @@ public class ArticleService {
         if (tokenInfo.getId().equals(article.getMember().getId())) {
             article.delete();
         } else {
-            throw new NotCorrectMemberException("Not Correct MemberId");
+            throw new NotCorrectMemberException("Not Correct MemberId, memberId = {%s}"
+                    .formatted(article.getMember().getId()));
         }
     }
 }

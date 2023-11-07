@@ -39,6 +39,6 @@ public class TaskService {
     }
 
     private Task findById(UUID id) {
-        return taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException("id 못찾음"));
+        return taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No search id"));
     }
 }
