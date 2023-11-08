@@ -21,7 +21,8 @@ public class TaskProducer {
                 kafkaTemplate.send(TopicConfig.TASK, taskUpdateKafka);
 
         if(resultCompletableFuture.isCompletedExceptionally()){
-            throw new RuntimeException("발행 실패");}
+            throw new RuntimeException("발행 실패");
+        }
 
         resultCompletableFuture
                 .thenAccept(result ->
