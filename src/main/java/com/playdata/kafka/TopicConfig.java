@@ -8,6 +8,7 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class TopicConfig {
     public final static String STORY = "story"; //내가 발행한 토픽
+    public final static String STORY_ARTICLE = "story-article";
     public final static String TASK = "task";
     public final static String MEMBER = "member"; //내가 구독한 토픽
     public final static String topicDLT = "member.DLT";
@@ -20,7 +21,14 @@ public class TopicConfig {
                 .replicas(1)
                 .build();
     }
-
+    @Bean
+    public NewTopic storyUpdate() {
+        return TopicBuilder
+                .name(STORY_ARTICLE)
+                .partitions(3)
+                .replicas(1)
+                .build();
+    }
     @Bean
     public NewTopic taskUpdate() {
         return TopicBuilder
