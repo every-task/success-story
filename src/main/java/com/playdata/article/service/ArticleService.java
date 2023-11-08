@@ -4,6 +4,7 @@ import com.playdata.config.TokenInfo;
 import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.kafka.ArticleKafka;
+import com.playdata.domain.article.kafka.ArticleUpdateKafka;
 import com.playdata.domain.article.repository.ArticleRepository;
 import com.playdata.domain.article.request.ArticleRequest;
 import com.playdata.domain.article.request.ArticleUpdateRequest;
@@ -12,6 +13,7 @@ import com.playdata.domain.article.response.ArticleResponse;
 import com.playdata.domain.task.dto.TaskDto;
 import com.playdata.exception.NotCorrectMemberException;
 import com.playdata.kafka.StoryProducer;
+import com.playdata.kafka.StoryUpdateProducer;
 import com.playdata.task.service.TaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ import java.util.UUID;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final StoryProducer storyProducer;
+    private final StoryUpdateProducer storyUpdateProducer;
     private final TaskService taskService;
 
     public void articleWrite(ArticleRequest articleRequest, UUID memberId) {
@@ -54,14 +57,14 @@ public class ArticleService {
                                          Long articleId,
                                          ArticleUpdateRequest articleUpdateRequest){
         Article article = findById(articleId);
-        List<TaskDto> list = article.getTasks().stream().map(TaskDto::new).toList();
-        return updateAndSendToKafkaById(tokenInfo, articleUpdateRequest, article, list);
+        return updateAndSendToKafkaById(tokenInfo, articleUpdateRequest, article);
     }
     
-    private ArticleResponse updateAndSendToKafkaById(TokenInfo tokenInfo, ArticleUpdateRequest articleUpdateRequest, Article article, List<TaskDto> list) {
+    private ArticleResponse updateAndSendToKafkaById(TokenInfo tokenInfo, ArticleUpdateRequest articleUpdateRequest, Article article) {
         if (tokenInfo.getId().equals(article.getMember().getId())) {
             article.update(articleUpdateRequest.title(), articleUpdateRequest.content(), articleUpdateRequest.category());
-            storyProducer.send(ArticleKafka.of(article, list));
+            ArticleUpdateKafka articleUpdateKafka = ArticleUpdateKafka.of(article);
+            storyUpdateProducer.send(articleUpdateKafka);
             return new ArticleResponse(article);
         }else {
             throw new NotCorrectMemberException("Not Correct Member, memberId = {%s}"
