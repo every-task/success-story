@@ -7,5 +7,7 @@ public enum Category {
     RELATIONSHIP,
     EMPLOYMENT,
     STRESS,
-    LANGUAGE
+    LANGUAGE,
+    STUDY,
+    MUSIC
 }
