@@ -18,7 +18,7 @@ public class StoryUpdateProducer {
     @Async
     public void send(ArticleUpdateKafka articleUpdateKafka) {
         CompletableFuture<SendResult<String, ArticleUpdateKafka>> resultCompletableFuture =
-                kafkaTemplate.send(TopicConfig.STORY_UPDATE, articleUpdateKafka);
+                kafkaTemplate.send(TopicConfig.STORY_ARTICLE, articleUpdateKafka);
 
         if(resultCompletableFuture.isCompletedExceptionally()){
             throw new RuntimeException("발행 실패");}
