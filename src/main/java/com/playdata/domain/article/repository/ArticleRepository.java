@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article, Long>, CustomArticleRepository {
     @Query("select a from Article a " +
             "left join fetch a.comments c  " +
-            "where a.isDeleted != true and a.id = :id and c.isDeleted != true" +
+            "where a.isDeleted != true and a.id = :id and (c.isDeleted != true or c is null) " +
             " order By a.createdAt desc ")
     Optional<Article> getArticleByIdFetchComment(@Param("id") Long id);
 }
