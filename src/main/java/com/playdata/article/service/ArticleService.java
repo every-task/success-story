@@ -46,7 +46,7 @@ public class ArticleService {
 
     public ArticleResponse getArticle(Long id) {
         Article articleResponse = articleRepository.getArticleByIdFetchComment(id)
-                .orElseThrow(()-> new NoSuchElementException("No search id"));
+                .orElseThrow(()-> new NoSuchElementException(String.format("No search id.id={%s}",id)));
         return new ArticleResponse(articleResponse);
     }
 
