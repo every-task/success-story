@@ -18,4 +18,11 @@ public class CustomControllerAdvice {
         return new ErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler(InvalidArticleException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorResponse handleNotInvalidArticle(InvalidArticleException e) {
+        log.error("Not Invalid Article id",e);
+        return new ErrorResponse(e.getMessage());
+    }
+
 }

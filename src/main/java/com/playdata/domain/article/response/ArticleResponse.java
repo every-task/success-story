@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 public class ArticleResponse extends ArticleDto {
     private List<CommentDto> comments;
-    private List<TaskDto> tasks;
     private MemberDto member;
 
     public ArticleResponse(Article article) {
@@ -20,11 +19,6 @@ public class ArticleResponse extends ArticleDto {
         comments = article.getComments()
                 .stream()
                 .map(CommentDto::new)
-                .toList();
-
-        tasks = article.getTasks()
-                .stream()
-                .map(TaskDto::new)
                 .toList();
 
         member = new MemberDto(article.getMember());

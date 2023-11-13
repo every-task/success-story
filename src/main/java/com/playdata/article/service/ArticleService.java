@@ -41,11 +41,12 @@ public class ArticleService {
     }
 
     public Article findById(Long id) {
-        return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("id 못찾음"));
+        return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No search id"));
     }
 
     public ArticleResponse getArticle(Long id) {
-        Article articleResponse = findById(id);
+        Article articleResponse = articleRepository.getArticleByIdFetchComment(id)
+                .orElseThrow(()-> new NoSuchElementException(String.format("No search id.id={%s}",id)));
         return new ArticleResponse(articleResponse);
     }
 
