@@ -4,7 +4,6 @@ import com.playdata.domain.task.dto.TaskDto;
 import com.playdata.domain.task.entity.Task;
 import com.playdata.domain.task.kafka.TaskUpdateKafka;
 import com.playdata.domain.task.repository.TaskRepository;
-import com.playdata.domain.task.request.TaskRequest;
 import com.playdata.domain.task.request.TaskUpdateRequest;
 import com.playdata.domain.task.response.TaskResponse;
 import com.playdata.kafka.TaskProducer;
