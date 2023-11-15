@@ -3,6 +3,7 @@ package com.playdata.article.service;
 import com.playdata.config.TokenInfo;
 import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.entity.Article;
+import com.playdata.domain.article.kafka.ArticleUpdateKafka;
 import com.playdata.domain.article.repository.ArticleRepository;
 import com.playdata.domain.article.request.ArticleRequest;
 import com.playdata.domain.article.request.ArticleUpdateRequest;
@@ -10,6 +11,7 @@ import com.playdata.domain.article.response.ArticleAllResponse;
 import com.playdata.domain.article.response.ArticleResponse;
 import com.playdata.domain.task.dto.TaskDto;
 import com.playdata.exception.NotCorrectMemberException;
+import com.playdata.kafka.ArticleProducer;
 import com.playdata.kafka.StoryProducer;
 import com.playdata.task.service.TaskService;
 import jakarta.transaction.Transactional;
@@ -28,6 +30,7 @@ import java.util.UUID;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final StoryProducer storyProducer;
+    private final ArticleProducer articleProducer;
     private final TaskService taskService;
 
     public void articleWrite(ArticleRequest articleRequest, UUID memberId) {
@@ -57,10 +60,13 @@ public class ArticleService {
         return updateAndSendToKafkaById(tokenInfo, articleUpdateRequest, article);
     }
     
-    private ArticleResponse updateAndSendToKafkaById(TokenInfo tokenInfo, ArticleUpdateRequest articleUpdateRequest, Article article) {
+    private ArticleResponse updateAndSendToKafkaById(TokenInfo tokenInfo,
+                                                     ArticleUpdateRequest articleUpdateRequest,
+                                                     Article article) {
         if (isRequestAuthorized(tokenInfo, article)) {
             article.update(articleUpdateRequest.title(), articleUpdateRequest.content(), articleUpdateRequest.category());
-            storyProducer.sendUpdate(article,null);
+            ArticleUpdateKafka articleUpdateKafka = ArticleUpdateKafka.create(article);
+            articleProducer.sendUpdate(articleUpdateKafka);
             return new ArticleResponse(article);
         }else {
             throw new NotCorrectMemberException("Not Correct Member, memberId = {%s}"
@@ -72,7 +78,8 @@ public class ArticleService {
                               Long articleId) {
         Article article = findById(articleId);
         deleteById(tokenInfo, article);
-        storyProducer.sendDelete(article, null);
+        ArticleUpdateKafka articleUpdateKafka = ArticleUpdateKafka.create(article);
+        articleProducer.sendDelete(articleUpdateKafka);
     }
 
     private void deleteById(TokenInfo tokenInfo, Article article) {
