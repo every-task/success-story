@@ -12,10 +12,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/story")
 public class MemberController {
-    private final MemberService memberService;
 
-    @PostMapping("/member")
-    public void memberSave(@RequestBody MemberRequest memberRequest) {
-        memberService.memberSave(memberRequest);
-    }
 }

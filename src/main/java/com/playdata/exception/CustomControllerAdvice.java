@@ -25,4 +25,10 @@ public class CustomControllerAdvice {
         return new ErrorResponse(e.getMessage());
     }
 
+    @ExceptionHandler(PublishingFailedException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handlePublishingFailed(PublishingFailedException e) {
+        log.error("Publishing failed", e);
+        return new ErrorResponse(e.getMessage());
+    }
 }

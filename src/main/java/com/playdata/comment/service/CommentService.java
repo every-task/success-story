@@ -63,7 +63,7 @@ public class CommentService {
             throw new InvalidArticleException("Not Invalid Article, ArticleId = {%s}"
                     .formatted(comment.getArticle().getId()));
         }
-        comment.isDeleted();
+        comment.delete();
     }
     private Comment findById(Long id) {
         return commentRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No search id"));

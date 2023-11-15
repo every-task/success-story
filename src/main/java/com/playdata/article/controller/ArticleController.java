@@ -35,7 +35,7 @@ public class ArticleController {
     @GetMapping
     public Page<ArticleAllResponse> getAll(
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
+            @RequestParam(value = "size", required = false, defaultValue = "9") Integer size,
             ArticleCondition articleCondition
     ) {
         return articleService.getAll(articleCondition, PageRequest.of(page, size));

@@ -3,8 +3,6 @@ package com.playdata.article.service;
 import com.playdata.config.TokenInfo;
 import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.entity.Article;
-import com.playdata.domain.article.kafka.ArticleKafka;
-import com.playdata.domain.article.kafka.ArticleUpdateKafka;
 import com.playdata.domain.article.repository.ArticleRepository;
 import com.playdata.domain.article.request.ArticleRequest;
 import com.playdata.domain.article.request.ArticleUpdateRequest;
@@ -13,7 +11,6 @@ import com.playdata.domain.article.response.ArticleResponse;
 import com.playdata.domain.task.dto.TaskDto;
 import com.playdata.exception.NotCorrectMemberException;
 import com.playdata.kafka.StoryProducer;
-import com.playdata.kafka.StoryUpdateProducer;
 import com.playdata.task.service.TaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,17 +28,16 @@ import java.util.UUID;
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final StoryProducer storyProducer;
-    private final StoryUpdateProducer storyUpdateProducer;
     private final TaskService taskService;
 
     public void articleWrite(ArticleRequest articleRequest, UUID memberId) {
         Article save = articleRepository.save(articleRequest.toEntityArticle(memberId));
         List<TaskDto> tasks = taskService.taskSaveAll(articleRequest.toEntityTasks(save));
-        storyProducer.send(ArticleKafka.of(save,tasks));
+        storyProducer.sendCreate(save,tasks);
     }
 
     public Article findById(Long id) {
-        return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No search id"));
+        return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("No search id.id={%s}",id)));
     }
 
     public ArticleResponse getArticle(Long id) {
@@ -62,28 +58,34 @@ public class ArticleService {
     }
     
     private ArticleResponse updateAndSendToKafkaById(TokenInfo tokenInfo, ArticleUpdateRequest articleUpdateRequest, Article article) {
-        if (tokenInfo.getId().equals(article.getMember().getId())) {
+        if (isRequestAuthorized(tokenInfo, article)) {
             article.update(articleUpdateRequest.title(), articleUpdateRequest.content(), articleUpdateRequest.category());
-            ArticleUpdateKafka articleUpdateKafka = ArticleUpdateKafka.of(article);
-            storyUpdateProducer.send(articleUpdateKafka);
+            storyProducer.sendUpdate(article,null);
             return new ArticleResponse(article);
         }else {
             throw new NotCorrectMemberException("Not Correct Member, memberId = {%s}"
                     .formatted(article.getMember().getId()));
         }
     }
+
     public void deleteArticle(TokenInfo tokenInfo,
                               Long articleId) {
         Article article = findById(articleId);
         deleteById(tokenInfo, article);
+        storyProducer.sendDelete(article, null);
     }
 
     private void deleteById(TokenInfo tokenInfo, Article article) {
-        if (tokenInfo.getId().equals(article.getMember().getId())) {
+        if (isRequestAuthorized(tokenInfo, article)) {
             article.delete();
         } else {
             throw new NotCorrectMemberException("Not Correct MemberId, memberId = {%s}"
                     .formatted(article.getMember().getId()));
         }
     }
+
+    private boolean isRequestAuthorized(TokenInfo tokenInfo, Article article) {
+        return tokenInfo.getId().equals(article.getMember().getId());
+    }
+
 }
