@@ -4,7 +4,7 @@ import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.entity.Category;
 
 public record ArticleUpdateKafka(Long id, String title, String content, Category category) {
-    public static ArticleUpdateKafka of(Article article) {
+    public static ArticleUpdateKafka create (Article article) {
         return new ArticleUpdateKafka(
                 article.getId(),
                 article.getTitle(),
