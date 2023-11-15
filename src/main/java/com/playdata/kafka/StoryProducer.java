@@ -2,6 +2,8 @@ package com.playdata.kafka;
 
 import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.kafka.ArticleKafka;
+import com.playdata.domain.article.kafka.KafkaAction;
+import com.playdata.domain.article.kafka.KafkaData;
 import com.playdata.domain.task.dto.TaskDto;
 import com.playdata.exception.PublishingFailedException;
 import lombok.RequiredArgsConstructor;
@@ -18,33 +20,24 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 @Slf4j
 public class StoryProducer {
-    private final KafkaTemplate<String, ArticleKafka> kafkaTemplate;
+    private final KafkaTemplate<String, KafkaData> kafkaTemplate;
 
     @Async
     public void sendCreate(Article article, List<TaskDto> tasks) {
-        send(article, tasks, "create");
+        send(article, tasks, KafkaAction.CREATE);
     }
 
-    @Async
-    public void sendUpdate(Article article, List<TaskDto> tasks) {
-        send(article, tasks, "update");
-    }
-
-    @Async
-    public void sendDelete(Article article, List<TaskDto> tasks) {
-        send(article, tasks, "delete");
-    }
-
-    private void send(Article article, List<TaskDto> tasks, String action) {
-        ArticleKafka articleKafka = ArticleKafka.of(article, tasks, action);
-        CompletableFuture<SendResult<String, ArticleKafka>> resultFuture =
-                kafkaTemplate.send(TopicConfig.STORY, articleKafka);
+    private void send(Article article, List<TaskDto> tasks, KafkaAction action) {
+        ArticleKafka articleKafka = ArticleKafka.create(article, tasks);
+        KafkaData kafkaData = KafkaData.of(articleKafka, action);
+        CompletableFuture<SendResult<String, KafkaData>> resultFuture =
+                kafkaTemplate.send(TopicConfig.STORY, kafkaData );
         resultFuture
                 .thenAccept(result -> {
                     log.info("Send success: {} Offset: {}",
-                            articleKafka, result.getRecordMetadata().offset());
+                            kafkaData, result.getRecordMetadata().offset());
                 }).exceptionally(e -> {
-                            log.error("Send failed: {}", articleKafka);
+                            log.error("Send failed: {}", kafkaData);
                             throw new PublishingFailedException("Publishing failed");
                         });
     }
