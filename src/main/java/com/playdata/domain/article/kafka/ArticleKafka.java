@@ -10,16 +10,13 @@ public record ArticleKafka(Long id,
                            String title,
                            String content,
                            Category category,
-                           List<TaskDto> tasks,
-                           String action) {
-    public static ArticleKafka of(Article article,
-                                  List<TaskDto> tasks,
-                                  String action) {
+                           List<TaskDto> tasks) {
+    public static ArticleKafka create (Article article,
+                                  List<TaskDto> tasks) {
         return new ArticleKafka(article.getId(),
                                 article.getTitle(),
                                 article.getContent(),
                                 article.getCategory(),
-                                tasks,
-                                action);
+                                tasks);
     }
 }
