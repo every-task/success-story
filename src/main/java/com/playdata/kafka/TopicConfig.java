@@ -25,7 +25,7 @@ public class TopicConfig {
     public NewTopic storyUpdate() {
         return TopicBuilder
                 .name(STORY_ARTICLE)
-                .partitions(3)
+                .partitions(1)
                 .replicas(1)
                 .build();
     }
@@ -33,7 +33,7 @@ public class TopicConfig {
     public NewTopic taskUpdate() {
         return TopicBuilder
                 .name(TASK)
-                .partitions(3)
+                .partitions(1)
                 .replicas(1)
                 .build();
     }

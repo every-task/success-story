@@ -37,7 +37,7 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                         article.isDeleted.eq(true).not()
                 )
                 .orderBy(article.createdAt.desc(), article.createdAt.asc())
-                .offset(request.getPageNumber())
+                .offset(request.getOffset())
                 .limit(request.getPageSize());
         List<Article> articleList = articles.fetch(); //fetch로 리스트 반환
 
