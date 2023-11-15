@@ -22,29 +22,30 @@ public class StoryProducer {
 
     @Async
     public void sendCreate(Article article, List<TaskDto> tasks) {
-        send(article,tasks, "create");
+        send(article, tasks, "create");
     }
+
     @Async
     public void sendUpdate(Article article, List<TaskDto> tasks) {
-        send(article,tasks,"update");
+        send(article, tasks, "update");
     }
+
     @Async
     public void sendDelete(Article article, List<TaskDto> tasks) {
-        send(article,tasks, "delete");
+        send(article, tasks, "delete");
     }
 
     private void send(Article article, List<TaskDto> tasks, String action) {
         ArticleKafka articleKafka = ArticleKafka.of(article, tasks, action);
         CompletableFuture<SendResult<String, ArticleKafka>> resultFuture =
                 kafkaTemplate.send(TopicConfig.STORY, articleKafka);
-        resultFuture.whenComplete((result, e) -> {
-            if (e == null) {
-                log.info("Send success: {} Offset: {}",
-                        articleKafka, result.getRecordMetadata().offset());
-            } else {
-                log.error("Send failed: {}", articleKafka);
-                throw new PublishingFailedException("Publishing failed");
-            }
-        });
+        resultFuture
+                .thenAccept(result -> {
+                    log.info("Send success: {} Offset: {}",
+                            articleKafka, result.getRecordMetadata().offset());
+                }).exceptionally(e -> {
+                            log.error("Send failed: {}", articleKafka);
+                            throw new PublishingFailedException("Publishing failed");
+                        });
     }
 }
