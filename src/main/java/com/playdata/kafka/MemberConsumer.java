@@ -5,6 +5,7 @@ import com.playdata.domain.member.kafka.MemberKafkaData;
 import com.playdata.domain.member.repository.MemberRepository;
 import com.playdata.exception.NotCorrectMemberException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MemberConsumer {
     private final MemberRepository memberRepository;
 
@@ -28,6 +30,6 @@ public class MemberConsumer {
 
     @KafkaListener(topics = TopicConfig.topicDLT)
     public void dltListen(byte[] in) {
-        System.out.println("dltListen" + new String(in)); //수정 예정 아직 뭐로 할지 결정하지 못함
+        log.info("dltListen" + new String(in)); //수정 예정 아직 뭐로 할지 결정하지 못함
     }
 }
