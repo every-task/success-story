@@ -28,6 +28,7 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
         JPAQuery<Article> articles = queryFactory
                 .select(article)
                 .from(article)
+                .join(article.member)
                 .leftJoin(article.comments)
                 .fetchJoin()
                 .where(
