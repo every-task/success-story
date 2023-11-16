@@ -15,8 +15,13 @@ import java.util.UUID;
 public class TaskController {
     private final TaskService taskService;
 
-    @PutMapping("/task/{id}")
+    @PutMapping("/tasks/{id}")
     public TaskResponse updateTask(@PathVariable UUID id, @RequestBody TaskUpdateRequest taskUpdateRequest) {
         return taskService.updateTask(id, taskUpdateRequest);
+    }
+
+    @DeleteMapping("/tasks/{id}")
+    public void deleteTask(@PathVariable UUID id) {
+        taskService.deleteTask(id);
     }
 }

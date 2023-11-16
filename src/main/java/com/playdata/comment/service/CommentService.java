@@ -42,11 +42,11 @@ public class CommentService {
                                        Comment comment,
                                        Long articleId,
                                        CommentUpdateRequest commentUpdateRequest) {
-        if (!tokenInfo.getId().equals(comment.getMember().getId())) {
+        if (isNotRequestAuthorized(tokenInfo, comment)) {
             throw new NotCorrectMemberException("Not Correct Member, memberId = {%s}"
                     .formatted(comment.getMember().getId()));
         }
-        if(!comment.getArticle().getId().equals(articleId)){
+        if(isNotRequestAuthorized(tokenInfo, comment)){
             throw new InvalidArticleException("Not Invalid Article, ArticleId = {%s}"
                     .formatted(comment.getArticle().getId()));
         }
@@ -54,12 +54,16 @@ public class CommentService {
         return new CommentResponse(comment);
     }
 
+    private boolean isNotRequestAuthorized(TokenInfo tokenInfo, Comment comment) {
+        return !tokenInfo.getId().equals(comment.getMember().getId());
+    }
+
     private void deleteById(TokenInfo tokenInfo, Comment comment, Long articleId) {
-        if (!tokenInfo.getId().equals(comment.getMember().getId())) {
+        if (isNotRequestAuthorized(tokenInfo, comment)) {
             throw new NotCorrectMemberException("Not Correct Member, memberId = {%s}"
                     .formatted(comment.getMember().getId()));
         }
-        if(!comment.getArticle().getId().equals(articleId)){
+        if(isNotRequestAuthorized(tokenInfo, comment)){
             throw new InvalidArticleException("Not Invalid Article, ArticleId = {%s}"
                     .formatted(comment.getArticle().getId()));
         }

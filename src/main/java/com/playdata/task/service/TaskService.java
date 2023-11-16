@@ -32,12 +32,20 @@ public class TaskService {
     public TaskResponse updateTask(UUID id, TaskUpdateRequest taskUpdateRequest) {
         Task task = findById(id);
         task.update(taskUpdateRequest.content(), taskUpdateRequest.period());
-        TaskUpdateKafka taskUpdateKafka = TaskUpdateKafka.of(task);
-        taskProducer.send(taskUpdateKafka);
+        TaskUpdateKafka taskUpdateKafka = TaskUpdateKafka.create(task);
+        taskProducer.sendUpdate(taskUpdateKafka);
         return new TaskResponse(task);
     }
 
+    public void deleteTask(UUID id) {
+        Task task = findById(id);
+        TaskUpdateKafka taskUpdateKafka = TaskUpdateKafka.create(task);
+        task.delete();
+        taskProducer.sendDelete(taskUpdateKafka);
+    }
+
     private Task findById(UUID id) {
-        return taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException("No search id"));
+        return taskRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementException(String.format("No search id.id={%s}",id)));
     }
 }
