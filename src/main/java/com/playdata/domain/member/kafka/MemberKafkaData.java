@@ -6,9 +6,10 @@ import java.util.UUID;
 
 public record MemberKafkaData(String id,
                               String nickname,
-                              String profileImageUrl) {
+                              String profileImageUrl,
+                              String action) {
 
-    public Member ToEntity() {
+    public Member toEntity() {
         return Member.builder()
                 .id(UUID.fromString(id))
                 .nickname(nickname)
