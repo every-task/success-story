@@ -3,6 +3,8 @@ package com.playdata.domain.article.dto;
 import com.playdata.domain.article.entity.Category;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -11,5 +13,5 @@ import lombok.*;
 public class ArticleCondition {
     private String title;
     private String content;
-    private Category category;
+    private List<Category> categories;
 }
