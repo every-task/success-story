@@ -39,7 +39,7 @@ public class TaskProducer {
                             kafkaData, result.getRecordMetadata().offset());
                 }).exceptionally(e -> {
                     log.error("Send failed: {}", kafkaData);
-                    throw new PublishingFailedException("Publishing failed");
+                    throw new PublishingFailedException("Publishing failed", e);
                 });
     }
 }
