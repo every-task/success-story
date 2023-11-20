@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,6 +16,7 @@ public class ArticleDto {
     private String title;
     private String content;
     private Category category;
+    protected LocalDateTime createdAt;
 
 
     public ArticleDto(Article article) {
@@ -21,5 +24,6 @@ public class ArticleDto {
         this.title = article.getTitle();
         this.content = article.getContent();
         this.category = article.getCategory();
+        this.createdAt = article.getCreatedAt();
     }
 }
