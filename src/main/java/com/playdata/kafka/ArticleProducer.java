@@ -1,6 +1,5 @@
 package com.playdata.kafka;
 
-import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.kafka.ArticleUpdateKafka;
 import com.playdata.domain.article.kafka.KafkaAction;
 import com.playdata.domain.article.kafka.KafkaData;
@@ -40,7 +39,7 @@ public class ArticleProducer {
                             kafkaData, result.getRecordMetadata().offset());
                 }).exceptionally(e -> {
                     log.error("Send failed: {}", kafkaData);
-                    throw new PublishingFailedException("Publishing failed");
+                    throw new PublishingFailedException("Publishing failed",e);
                 });
     }
 

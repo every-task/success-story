@@ -4,6 +4,7 @@ import com.playdata.domain.article.dto.ArticleCondition;
 import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.entity.Category;
 import com.playdata.domain.article.response.ArticleAllResponse;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,9 +34,9 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 .fetchJoin()
                 .where(
                         contentContains(condition.getContent()),
-                        titleEq(condition.getTitle()),
-                        categoryEq(condition.getCategory()),
-                        article.isDeleted.eq(true).not()
+                        categoryListEq(condition.getCategories()),
+                        article.isDeleted.eq(true).not(),
+                        titleContains(condition.getTitle())
                 )
                 .orderBy(article.createdAt.desc(), article.createdAt.asc())
                 .offset(request.getOffset())
@@ -47,9 +48,9 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 .from(article)
                 .where(
                         contentContains(condition.getContent()),
-                        titleEq(condition.getTitle()),
-                        categoryEq(condition.getCategory()),
-                        article.isDeleted.eq(true).not() //true 인것만 안보임
+                        categoryListEq(condition.getCategories()),
+                        article.isDeleted.eq(true).not(), //true 인것만 안보임
+                        titleContains(condition.getTitle())
                 )
                 .fetchOne(); //단건조회
         PageImpl<Article> articlesList = new PageImpl<>(articleList, request, totalSize);
@@ -65,15 +66,20 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                 ? null
                 : article.content.contains(content);
     }
-    private BooleanExpression titleEq(String title) {
-        return title == null
+
+    private BooleanExpression titleContains(String title) {
+        return title == null || title.isEmpty()
                 ? null
-                : article.title.eq(title);
+                : article.title.contains(title);
     }
 
-    private BooleanExpression categoryEq(Category category) {
-        return category == null
-                ? null
-                : article.category.eq(category);
+    private BooleanBuilder categoryListEq(List<Category> categories) {
+        if (categories == null || categories.isEmpty()) {
+            return null;
+        }
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        categories.forEach(t ->booleanBuilder.or(article.category.eq(t)));
+        return booleanBuilder;
     }
+
 }
