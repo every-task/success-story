@@ -37,8 +37,8 @@ public class StoryProducer {
                     log.info("Send success: {} Offset: {}",
                             kafkaData, result.getRecordMetadata().offset());
                 }).exceptionally(e -> {
-                            log.error("Send failed: {}", kafkaData);
-                            throw new PublishingFailedException("Publishing failed");
+                            log.error("Send failed: {}", kafkaData, e);
+                            throw new PublishingFailedException("Publishing failed", e); // 에러를 e를 넣어야함
                         });
     }
 }
