@@ -45,7 +45,7 @@ public class ArticleController {
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "createAtAsc", required = false) Boolean createAtAsc
     ) {
-        List<Category> categoryList = categorise!=null?categorise.stream().map(Category::valueOf).toList(): Collections.emptyList();
+        List<Category> categoryList = categorise!=null?categorise.stream().map(Category::valueOf).toList():null;
         ArticleCondition articleCondition = ArticleCondition
                 .builder()
                 .title(title)
