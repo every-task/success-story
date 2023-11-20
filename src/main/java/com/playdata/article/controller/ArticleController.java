@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -41,13 +42,16 @@ public class ArticleController {
             @RequestParam(value = "size", required = false, defaultValue = "9") Integer size,
             @RequestParam(value = "category", required = false) List<String> categorise,
             @RequestParam(value = "title", required = false) String title,
-            @RequestParam(value = "content", required = false) String content
+            @RequestParam(value = "content", required = false) String content,
+            @RequestParam(value = "createAtAsc", required = false) Boolean createAtAsc
     ) {
+        List<Category> categoryList = categorise!=null?categorise.stream().map(Category::valueOf).toList(): Collections.emptyList();
         ArticleCondition articleCondition = ArticleCondition
                 .builder()
                 .title(title)
                 .content(content)
-                .categories(categorise.stream().map(Category::valueOf).toList())//valueOf는 Java Enum 클래스에서 제공되는 메서드, 주어진 문자열과 일치하는 열거 상수를 찾아 반환
+                .categories(categoryList)
+                .createAtAsc(createAtAsc)
                 .build();
         return articleService.getAll(articleCondition, PageRequest.of(page, size));
     }
