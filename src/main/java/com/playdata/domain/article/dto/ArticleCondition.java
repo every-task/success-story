@@ -14,4 +14,5 @@ public class ArticleCondition {
     private String title;
     private String content;
     private List<Category> categories;
+    private Boolean createAtAsc;
 }

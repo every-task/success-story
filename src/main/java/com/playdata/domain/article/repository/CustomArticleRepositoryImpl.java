@@ -5,6 +5,7 @@ import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.entity.Category;
 import com.playdata.domain.article.response.ArticleAllResponse;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.playdata.domain.article.entity.QArticle.article;
@@ -26,6 +28,7 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
 
     @Override
     public Page<ArticleAllResponse> findAllByCondition(PageRequest request, ArticleCondition condition) {
+
         JPAQuery<Article> articles = queryFactory
                 .select(article)
                 .from(article)
@@ -38,7 +41,7 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
                         article.isDeleted.eq(true).not(),
                         titleContains(condition.getTitle())
                 )
-                .orderBy(article.createdAt.desc(), article.createdAt.asc())
+                .orderBy(createAtOrder(condition.getCreateAtAsc()))
                 .offset(request.getOffset())
                 .limit(request.getPageSize());
         List<Article> articleList = articles.fetch(); //fetch로 리스트 반환
@@ -60,7 +63,6 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
 
     }
 
-
     private BooleanExpression contentContains(String content) {
         return content == null || content.isEmpty()
                 ? null
@@ -81,5 +83,7 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
         categories.forEach(t ->booleanBuilder.or(article.category.eq(t)));
         return booleanBuilder;
     }
-
+    private OrderSpecifier<LocalDateTime> createAtOrder(Boolean isAsc){
+        return isAsc != null&&isAsc? article.createdAt.asc() : article.createdAt.desc();
+    }
 }
