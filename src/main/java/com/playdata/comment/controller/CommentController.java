@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping("/{articleId}/comment")
+    @PostMapping("articles/{articleId}/comment")
     public void commentWrite(@AuthenticationPrincipal TokenInfo tokenInfo,
                              @PathVariable(value = "articleId") Long articleId,
                              @RequestBody CommentRequest commentRequest) {
         commentService.commentWrite(commentRequest, articleId,tokenInfo.getId());
     }
 
-    @PutMapping("/{articleId}/comment/{id}")
+    @PutMapping("articles/{articleId}/comments/{id}")
     public CommentResponse updateComment(@AuthenticationPrincipal TokenInfo tokenInfo,
                                          @PathVariable(value = "articleId") Long articleId,
                                          @PathVariable(value = "id") Long id,
@@ -30,7 +30,7 @@ public class CommentController {
         return commentService.updateComment(tokenInfo,id,articleId,commentUpdateRequest);
     }
 
-    @DeleteMapping("/{articleId}/comment/{id}")
+    @DeleteMapping("articles/{articleId}/comments/{id}")
     public void deleteComment(@AuthenticationPrincipal TokenInfo tokenInfo,
                               @PathVariable(value = "articleId") Long articleId,
                               @PathVariable(value = "id") Long id) {
