@@ -96,4 +96,8 @@ public class ArticleService {
         return tokenInfo.getId().equals(article.getMember().getId());
     }
 
+    public List<Article> viewDesc() {
+        return articleRepository.findAllByOrderByViewDesc();
+    }
+
 }
