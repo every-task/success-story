@@ -40,12 +40,14 @@ public class ArticleService {
     }
 
     public Article findById(Long id) {
-        return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("No search id.id={%s}",id)));
+        return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("No search id.id={%s}", id)));
     }
 
     public ArticleResponse getArticle(Long id) {
         Article articleResponse = articleRepository.getArticleByIdFetchComment(id)
                 .orElseThrow(()-> new NoSuchElementException(String.format("No search id.id={%s}",id)));
+        int view = articleResponse.getView()+1;
+        articleResponse.updateView(view);
         return new ArticleResponse(articleResponse);
     }
 
@@ -95,4 +97,9 @@ public class ArticleService {
         return tokenInfo.getId().equals(article.getMember().getId());
     }
 
+    public void viewCount(Long articleId) {
+        Article article = findById(articleId);
+        int view = article.getView()+1;
+        article.updateView(view);
+    }
 }
