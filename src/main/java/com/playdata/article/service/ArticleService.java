@@ -44,8 +44,7 @@ public class ArticleService {
     }
 
     public ArticleResponse getArticle(Long id) {
-        Article articleResponse = articleRepository.getArticleByIdFetchComment(id)
-                .orElseThrow(()-> new NoSuchElementException(String.format("No search id.id={%s}",id)));
+        Article articleResponse = articleRepository.getArticleByIdFetchComment(id);
         int view = articleResponse.getView()+1;
         articleResponse.updateView(view);
         return new ArticleResponse(articleResponse);
@@ -97,9 +96,4 @@ public class ArticleService {
         return tokenInfo.getId().equals(article.getMember().getId());
     }
 
-    public void viewCount(Long articleId) {
-        Article article = findById(articleId);
-        int view = article.getView()+1;
-        article.updateView(view);
-    }
 }
