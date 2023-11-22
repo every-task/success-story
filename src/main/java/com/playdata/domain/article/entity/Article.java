@@ -22,6 +22,9 @@ public class Article extends BaseEntity {
 
     private String title;
     private String content;
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
+    private String thumbnailImageUrl;
 
     @Enumerated(EnumType.STRING)
     private Category category;
@@ -47,5 +50,7 @@ public class Article extends BaseEntity {
         this.content = content;
         this.category = category;
     }
-
+    public void updateView(int view) {
+        this.view = view;
+    }
 }

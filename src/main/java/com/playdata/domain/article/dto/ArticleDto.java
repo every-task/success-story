@@ -16,6 +16,8 @@ public class ArticleDto {
     private String title;
     private String content;
     private Category category;
+    private int view;
+    private String thumbnailImageUrl;
     protected LocalDateTime createdAt;
 
 
@@ -24,6 +26,8 @@ public class ArticleDto {
         this.title = article.getTitle();
         this.content = article.getContent();
         this.category = article.getCategory();
+        this.view = article.getView();
+        this.thumbnailImageUrl = article.getThumbnailImageUrl();
         this.createdAt = article.getCreatedAt();
     }
 }
