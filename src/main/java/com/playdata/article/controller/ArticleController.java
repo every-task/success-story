@@ -3,7 +3,6 @@ package com.playdata.article.controller;
 import com.playdata.article.service.ArticleService;
 import com.playdata.config.TokenInfo;
 import com.playdata.domain.article.dto.ArticleCondition;
-import com.playdata.domain.article.entity.Article;
 import com.playdata.domain.article.entity.Category;
 import com.playdata.domain.article.request.ArticleRequest;
 import com.playdata.domain.article.request.ArticleUpdateRequest;
@@ -73,7 +72,7 @@ public class ArticleController {
 
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
-    public List<Article> popularView() {
+    public List<ArticleResponse> popularView() {
         return articleService.viewDesc();
     }
 }
