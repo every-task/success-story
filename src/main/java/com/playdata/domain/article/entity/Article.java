@@ -53,4 +53,8 @@ public class Article extends BaseEntity {
     public void updateView(int view) {
         this.view = view;
     }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }
