@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -71,4 +70,9 @@ public class ArticleController {
         articleService.deleteArticle(tokenInfo,id);
     }
 
+    @GetMapping("/popular")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ArticleResponse> popularView() {
+        return articleService.viewDesc();
+    }
 }
