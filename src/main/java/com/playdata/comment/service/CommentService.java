@@ -33,9 +33,9 @@ public class CommentService {
         return updateById(tokenInfo, comment, articleId, commentUpdateRequest);
     }
     
-    public void deleteComment(TokenInfo tokenInfo, Long id, Long articleId) {
+    public void deleteComment(TokenInfo tokenInfo, Long id) {
         Comment comment = findById(id);
-        deleteById(tokenInfo, comment, articleId);
+        deleteById(tokenInfo, comment);
     }
 
     private CommentResponse updateById(TokenInfo tokenInfo,
@@ -58,14 +58,10 @@ public class CommentService {
         return !tokenInfo.getId().equals(comment.getMember().getId());
     }
 
-    private void deleteById(TokenInfo tokenInfo, Comment comment, Long articleId) {
+    private void deleteById(TokenInfo tokenInfo, Comment comment) {
         if (isNotRequestAuthorized(tokenInfo, comment)) {
             throw new NotCorrectMemberException("Not Correct Member, memberId = {%s}"
                     .formatted(comment.getMember().getId()));
-        }
-        if(isNotRequestAuthorized(tokenInfo, comment)){
-            throw new InvalidArticleException("Not Invalid Article, ArticleId = {%s}"
-                    .formatted(comment.getArticle().getId()));
         }
         comment.delete();
     }

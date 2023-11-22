@@ -30,10 +30,9 @@ public class CommentController {
         return commentService.updateComment(tokenInfo,id,articleId,commentUpdateRequest);
     }
 
-    @DeleteMapping("articles/{articleId}/comments/{id}")
+    @DeleteMapping("/comments/{id}")
     public void deleteComment(@AuthenticationPrincipal TokenInfo tokenInfo,
-                              @PathVariable(value = "articleId") Long articleId,
                               @PathVariable(value = "id") Long id) {
-        commentService.deleteComment(tokenInfo,id,articleId);
+        commentService.deleteComment(tokenInfo,id);
     }
 }
