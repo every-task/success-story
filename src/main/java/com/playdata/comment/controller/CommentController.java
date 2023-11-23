@@ -9,11 +9,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/story")
 public class CommentController {
     private final CommentService commentService;
+
+    @GetMapping("/comments")
+    public List<CommentResponse> findAllComment() {
+        return commentService.getAllComment();
+    }
 
     @PostMapping("articles/{articleId}/comment")
     public void commentWrite(@AuthenticationPrincipal TokenInfo tokenInfo,
