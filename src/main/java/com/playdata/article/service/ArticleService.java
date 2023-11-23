@@ -45,12 +45,12 @@ public class ArticleService {
     }
 
     public ArticleResponse getArticle(Long id) {
-        Article article = articleRepository.findArticleById(id)
-                .orElseThrow(()-> new NoSuchElementException("No search id.id={%s}".formatted(id)));
-        int view = article.getView()+1;
-        article.updateView(view);
-        return new ArticleResponse(article);
+        Article articleResponse = articleRepository.getArticleByIdFetchComment(id);
+        int view = articleResponse.getView()+1;
+        articleResponse.updateView(view);
+        return new ArticleResponse(articleResponse);
     }
+
 
     public Page<ArticleAllResponse> getAll(ArticleCondition articleCondition, PageRequest pageRequest) {
         return articleRepository.findAllByCondition(pageRequest, articleCondition);

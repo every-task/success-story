@@ -13,5 +13,4 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article, Long>, CustomArticleRepository {
     @Query("select a from Article a where a.isDeleted = false order by a.view desc, a.createdAt desc limit :pageSize")
     List<ArticleAllResponse> findAllByViewAndCreatedAt(int pageSize);
-
 }

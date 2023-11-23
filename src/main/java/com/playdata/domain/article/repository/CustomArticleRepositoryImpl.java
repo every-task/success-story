@@ -63,7 +63,27 @@ public class CustomArticleRepositoryImpl implements CustomArticleRepository {
         PageImpl<Article> articlesList = new PageImpl<>(articleList, request, totalSize);
         Page<ArticleAllResponse> map = articlesList.map(ArticleAllResponse::new);
         return map;
+    }
+    @Override
+    public Article getArticleByIdFetchComment(Long id) {
+        Article article = queryFactory
+                .select(QArticle.article)
+                .from(QArticle.article)
+                .where(QArticle.article.isDeleted.eq(false), QArticle.article.id.eq(id))
+                .orderBy(QArticle.article.createdAt.desc()).fetchOne();
 
+        if(article==null) throw new NoSuchElementException("No search id, id={%s}".formatted(id));
+
+        List<Comment> comments = queryFactory
+                .select(QComment.comment)
+                .from(QComment.comment)
+                .innerJoin(QComment.comment.member)
+                .fetchJoin()
+                .where(QComment.comment.isDeleted.eq(false),
+                        QComment.comment.article.id.eq(id))
+                .fetch();
+        article.setComments(comments);
+        return article;
     }
 
     private BooleanExpression contentContains(String content) {
