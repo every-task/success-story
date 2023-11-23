@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, CustomArticleRepository {
-    @Query("select a from Article a where a.isDeleted = false order by a.view desc, a.createdAt desc limit 9")
-    List<ArticleResponse> findAllByViewAndCreatedAt();
+    @Query("select a from Article a where a.isDeleted = false order by a.view desc, a.createdAt desc limit :pageSize")
+    List<ArticleResponse> findAllByViewAndCreatedAt(int pageSize);
 }
