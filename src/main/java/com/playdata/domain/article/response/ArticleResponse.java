@@ -10,10 +10,15 @@ import java.util.List;
 
 @Getter
 public class ArticleResponse extends ArticleDto {
+    private List<CommentDto> comments;
     private MemberDto member;
 
     public ArticleResponse(Article article) {
         super(article);
+        comments = article.getComments()
+                .stream()
+                .map(CommentDto::new)
+                .toList();
 
         member = new MemberDto(article.getMember());
     }
