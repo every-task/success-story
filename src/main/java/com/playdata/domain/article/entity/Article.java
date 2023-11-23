@@ -54,7 +54,4 @@ public class Article extends BaseEntity {
         this.view = view;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 }
