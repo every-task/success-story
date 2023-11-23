@@ -98,7 +98,7 @@ public class ArticleService {
         return tokenInfo.getId().equals(article.getMember().getId());
     }
 
-    public List<ArticleResponse> viewDesc() {
+    public List<ArticleAllResponse> viewDesc() {
         return articleRepository.findAllByViewAndCreatedAt(9);
     }
 
