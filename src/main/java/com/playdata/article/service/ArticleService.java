@@ -97,7 +97,7 @@ public class ArticleService {
     }
 
     public List<ArticleResponse> viewDesc() {
-        return articleRepository.findAllByViewAndCreatedAt();
+        return articleRepository.findAllByViewAndCreatedAt(9);
     }
 
 }
