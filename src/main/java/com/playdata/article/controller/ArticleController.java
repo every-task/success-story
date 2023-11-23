@@ -72,7 +72,7 @@ public class ArticleController {
 
     @GetMapping("/popular")
     @ResponseStatus(HttpStatus.OK)
-    public List<ArticleResponse> popularView() {
+    public List<ArticleAllResponse> popularView() {
         return articleService.viewDesc();
     }
 }
